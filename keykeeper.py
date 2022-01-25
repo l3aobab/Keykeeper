@@ -23,17 +23,15 @@ if ddbb:
 	createMP="CREATE TABLE IF NOT EXISTS master (master varchar(255))"
 	dbcursor.execute(createMP)
 
-	createT="CREATE TABLE IF NOT EXISTS gestor (user_id int PRIMARY KEY AUTO_INCREMENT,usuario varchar(50),contraseña varchar(255),email varchar(100))"
+	createT="CREATE TABLE IF NOT EXISTS gestor (user_id int PRIMARY KEY AUTO_INCREMENT,sitio varchar(50) NOT NULL,usuario varchar(50),contraseña varchar(255) NOT NULL,email varchar(100))"
 	dbcursor.execute(createT)
-
-#consulta de prueba
+	#insertT="INSERT INTO gestor (sitio,usuario,contraseña,email) VALUES ('twitter','l3aobab','abc123.','correofalso@gmail.com')"
+	#dbcursor.execute(insertT)
+	#ddbb.commit()
+	
+	#consulta de prueba
 	showGestor="SELECT * FROM gestor"
 	dbcursor.execute(showGestor)
 	showGestorResultado=dbcursor.fetchall()
-
-	printTable=PrettyTable()
-
-#hay que insertar un valor para saber si esta mierda va
-	printTable.field_names= ["Codigo","Usuario","Contraseña","Email"]
 	for fila in showGestorResultado:
-		print(printTable)
+		print(fila)
