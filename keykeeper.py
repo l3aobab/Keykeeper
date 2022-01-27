@@ -17,6 +17,15 @@ ddbb=mysql.connector.connect(host="localhost",user=name,passwd=pswd,database="pa
 dbcursor=ddbb.cursor()
 clearConsole()
 
+#elegir una accion en el menu
+def showOpcion():
+	op=None
+	try:
+		op=int(input("Selecciona una opcion: "))
+	except ValueError:
+		print('Error, debes seleccionar un numero del 1 al 6 para seleccionar una opcion')
+	return op
+
 if ddbb:
 
 	#se crean las tablas master y gestor si no existen
@@ -25,21 +34,15 @@ if ddbb:
 
 	createT="CREATE TABLE IF NOT EXISTS gestor (user_id int PRIMARY KEY AUTO_INCREMENT,sitio varchar(50) NOT NULL,usuario varchar(50),contraseña varchar(255) NOT NULL,email varchar(100))"
 	dbcursor.execute(createT)
-
 	
-	#funcion para mostrar todas las contraseñas
+	#mostrar todas las contraseñas
 	def showAll():
 		showGestor="SELECT * FROM gestor"
 		dbcursor.execute(showGestor)
 		showGestorResultado=dbcursor.fetchall()
 		return showGestorResultado
 
-	#Hay que poner esto dentro del menu, opcion 1
-#	selectAll=showAll()
-#	for fila in selectAll:
-#		print(fila)
-
-	#funcion para mostrar una linea en concreto
+	#mostrar una linea en concreto
 	def showOne():
 		app=input("Indica una aplicación: ")
 		usr=input("Indica el nombre de usuario: ")
@@ -48,12 +51,7 @@ if ddbb:
 		sgor=dbcursor.fetchall()
 		return sgor
 
-	#Hay que poner esto dentro del menu, opcion 2
-#	selectOne=showOne()
-#	for fila in selectOne:
-#		print(fila)
-
-	#completar esto mañana
+	#actualizar una contraseña
 	def updateOne():
 		app=input("Indica una aplicación: ")
 		usr=input("Indica el nombre de usuario: ")
@@ -66,8 +64,7 @@ if ddbb:
 			ddbb.commit()
 			return sur
 
-#	update=updateOne()
-
+	#borrar todos los datos de un determinado sitio
 	def deletePass():
 		app=input("Indica una aplicación: ")
 		usr=input("Indica el nombre de usuario: ")
@@ -77,11 +74,7 @@ if ddbb:
 		ddbb.commit()
 		return doDeleteRes
 
-#	delete=deletePass()
-#	selectAll=showAll()
-#	for fila in selectAll:
-#		print(fila)
-
+	#añadir una nueva contraseña
 	def addOne():
 		app=input("Indica una aplicación: ")
 		usr=input("Indica el nombre de usuario: ")
@@ -95,7 +88,63 @@ if ddbb:
 			ddbb.commit()
 			return addOneRes
 
-	add=addOne()
-	selectAll=showAll()
-	for fila in selectAll:
-		print(fila)
+	salir=False
+	opcion=0
+
+	while not salir:
+		print("""
+----------------------------------------------------------------------------------------
+
+Bienvendio """+ name +""" a tu gestor de contraseñas.
+Para continuar, por favor, selecciona una de las siguientes opciones:
+
+1)Mostrar todas las contraseñas
+2)Mostrar una contraseña en concreto
+3)Actualizar una contraseña
+4)Eliminar una contraseña
+5)Añadir una nueva contraseña
+6)Salir
+
+----------------------------------------------------------------------------------------
+			""")
+
+		opcion=showOpcion()
+
+		if opcion==1:
+			clearConsole()
+			selectAll=showAll()
+			for fila in selectAll:
+				print(fila)
+			pass
+		elif opcion==2:
+			clearConsole()
+			selectOne=showOne()
+			for fila in selectOne:
+				print(fila)
+		elif opcion==3:
+			clearConsole()
+			updateOne()
+			clearConsole()
+			selectAll=showAll()
+			for fila in selectAll:
+				print(fila)
+			pass
+		elif opcion==4:
+			clearConsole()
+			deletePass()
+			clearConsole()
+			selectAll=showAll()
+			for fila in selectAll:
+				print(fila)
+			pass
+		elif opcion==5:
+			clearConsole()
+			addOne()
+			clearConsole()
+			selectAll=showAll()
+			for fila in selectAll:
+				print(fila)
+			pass
+		elif opcion==6:
+			clearConsole()
+			salir=True
