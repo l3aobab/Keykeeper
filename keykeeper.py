@@ -25,9 +25,7 @@ if ddbb:
 
 	createT="CREATE TABLE IF NOT EXISTS gestor (user_id int PRIMARY KEY AUTO_INCREMENT,sitio varchar(50) NOT NULL,usuario varchar(50),contraseña varchar(255) NOT NULL,email varchar(100))"
 	dbcursor.execute(createT)
-	#insertT="INSERT INTO gestor (sitio,usuario,contraseña,email) VALUES ('instagram','l3aobab','abc.123','correofalso2@gmail.com')"
-	#dbcursor.execute(insertT)
-	#ddbb.commit()
+
 	
 	#funcion para mostrar todas las contraseñas
 	def showAll():
@@ -37,9 +35,9 @@ if ddbb:
 		return showGestorResultado
 
 	#Hay que poner esto dentro del menu, opcion 1
-	selectAll=showAll()
-	for fila in selectAll:
-		print(fila)
+#	selectAll=showAll()
+#	for fila in selectAll:
+#		print(fila)
 
 	#funcion para mostrar una linea en concreto
 	def showOne():
@@ -51,14 +49,53 @@ if ddbb:
 		return sgor
 
 	#Hay que poner esto dentro del menu, opcion 2
-	selectOne=showOne()
-	for fila in selectOne:
-		print(fila)
+#	selectOne=showOne()
+#	for fila in selectOne:
+#		print(fila)
 
 	#completar esto mañana
 	def updateOne():
 		app=input("Indica una aplicación: ")
 		usr=input("Indica el nombre de usuario: ")
-		psw=input("Introduce la nueva contraseña: ")
-		psw2=input("Confirma la nueva contraseña: ")
+		psw=getpass.getpass("Introduce la nueva contraseña: ")
+		psw2=getpass.getpass("Confirma la nueva contraseña: ")
 		if psw==psw2:
+			showUpdate="UPDATE gestor SET contraseña=%s WHERE sitio=%s and usuario=%s"
+			dbcursor.execute(showUpdate,(psw, app, usr, ))
+			sur=dbcursor.fetchall()
+			ddbb.commit()
+			return sur
+
+#	update=updateOne()
+
+	def deletePass():
+		app=input("Indica una aplicación: ")
+		usr=input("Indica el nombre de usuario: ")
+		doDelete="DELETE FROM gestor WHERE sitio=%s and usuario=%s"
+		dbcursor.execute(doDelete,(app, usr, ))
+		doDeleteRes=dbcursor.fetchall()
+		ddbb.commit()
+		return doDeleteRes
+
+#	delete=deletePass()
+#	selectAll=showAll()
+#	for fila in selectAll:
+#		print(fila)
+
+	def addOne():
+		app=input("Indica una aplicación: ")
+		usr=input("Indica el nombre de usuario: ")
+		psw=getpass.getpass("Introduce la nueva contraseña: ")
+		psw2=getpass.getpass("Confirma la nueva contraseña: ")
+		eml=input("Indica el correo electronico: ")
+		if psw==psw2:
+			insertT="INSERT INTO gestor (sitio,usuario,contraseña,email) VALUES (%s,%s,%s,%s)"
+			dbcursor.execute(insertT,(app, usr, psw, eml, ))
+			addOneRes=dbcursor.fetchall()
+			ddbb.commit()
+			return addOneRes
+
+	add=addOne()
+	selectAll=showAll()
+	for fila in selectAll:
+		print(fila)
