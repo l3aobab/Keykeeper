@@ -12,8 +12,9 @@ print("Bienvenido a Key Keeper, tu gestor de contraseñas")
 print("Para continuar, introce los siguientes datos:")
 name=input("Nombre de usuario: ")
 pswd=getpass.getpass("Contraseña: ")
+bbdd=input("Nombre de la base de datos: ")
 
-ddbb=mysql.connector.connect(host="localhost",user=name,passwd=pswd,database="passwd")
+ddbb=mysql.connector.connect(host="localhost",user=name,passwd=pswd)
 dbcursor=ddbb.cursor()
 clearConsole()
 
@@ -23,10 +24,38 @@ def showOpcion():
 	try:
 		op=int(input("Selecciona una opcion: "))
 	except ValueError:
+		clearConsole()
 		print('Error, debes seleccionar un numero del 1 al 6 para seleccionar una opcion')
 	return op
 
+#se comprueba si el usuario quiere obtener otra contraseña o no
+def comprobacionShow():
+	print("""
+Desea obtener otra contraseña?
+	1.Si
+	2.No
+		""")
+	op=None
+	try:
+		op=int(input("Selecciona una opcion: "))
+	except ValueError:
+		clearConsole()
+		print('Error, selecciona uno de los valores para poder continuar')
+		comprobacionShow()
+	if op==1:
+		clearConsole()
+		showOne()
+	else:
+		clearConsole()
+		pass
+	return op
+
 if ddbb:
+	createDB="CREATE DATABASE IF NOT EXISTS "+bbdd
+	dbcursor.execute(createDB)
+
+	useDB="USE "+bbdd
+	dbcursor.execute(useDB)
 
 	#se crean las tablas master y gestor si no existen
 	createMP="CREATE TABLE IF NOT EXISTS master (master varchar(255))"
@@ -40,6 +69,8 @@ if ddbb:
 		showGestor="SELECT * FROM gestor"
 		dbcursor.execute(showGestor)
 		showGestorResultado=dbcursor.fetchall()
+		for fila in showGestorResultado:
+			print(fila)
 		return showGestorResultado
 
 	#mostrar una linea en concreto
@@ -49,6 +80,9 @@ if ddbb:
 		showGestorOne=("SELECT * FROM gestor WHERE sitio=%s and usuario=%s")
 		dbcursor.execute(showGestorOne,(app, usr, ))
 		sgor=dbcursor.fetchall()
+		for fila in sgor:
+			print(fila)
+		comprobacionShow()
 		return sgor
 
 	#actualizar una contraseña
@@ -120,15 +154,11 @@ Para continuar, por favor, selecciona una de las siguientes opciones:
 
 		if opcion==1:
 			clearConsole()
-			selectAll=showAll()
-			for fila in selectAll:
-				print(fila)
-			pass
+			showAll()
 		elif opcion==2:
 			clearConsole()
-			selectOne=showOne()
-			for fila in selectOne:
-				print(fila)
+			showOne()
+			comprobacionShow()
 		elif opcion==3:
 			clearConsole()
 			updateOne()
@@ -143,10 +173,7 @@ Para continuar, por favor, selecciona una de las siguientes opciones:
 			clearConsole()
 			addOne()
 			clearConsole()
-			selectAll=showAll()
-			for fila in selectAll:
-				print(fila)
-			pass
+			showAll()
 		elif opcion==6:
 			clearConsole()
 			salir=True
