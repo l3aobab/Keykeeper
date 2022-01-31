@@ -62,7 +62,11 @@ if ddbb:
 			dbcursor.execute(showUpdate,(psw, app, usr, ))
 			sur=dbcursor.fetchall()
 			ddbb.commit()
-			return sur
+		else:
+			clearConsole()
+			print("Se ha producido un error, por favor, vuelva a intentarlo")
+			addOne()	
+		return sur
 
 	#borrar todos los datos de un determinado sitio
 	def deletePass():
@@ -86,7 +90,11 @@ if ddbb:
 			dbcursor.execute(insertT,(app, usr, psw, eml, ))
 			addOneRes=dbcursor.fetchall()
 			ddbb.commit()
-			return addOneRes
+		else:
+			clearConsole()
+			print("Se ha producido un error, por favor, vuelva a intentarlo")
+			addOne()
+		return addOneRes
 
 	salir=False
 	opcion=0
@@ -95,7 +103,7 @@ if ddbb:
 		print("""
 ----------------------------------------------------------------------------------------
 
-Bienvendio """+ name +""" a tu gestor de contraseñas.
+Bienvendio, """+ name +""", a tu gestor de contraseñas.
 Para continuar, por favor, selecciona una de las siguientes opciones:
 
 1)Mostrar todas las contraseñas
@@ -125,18 +133,12 @@ Para continuar, por favor, selecciona una de las siguientes opciones:
 			clearConsole()
 			updateOne()
 			clearConsole()
-			selectAll=showAll()
-			for fila in selectAll:
-				print(fila)
-			pass
+			print("Se ha actualizado tu contraseña!")
 		elif opcion==4:
 			clearConsole()
 			deletePass()
 			clearConsole()
-			selectAll=showAll()
-			for fila in selectAll:
-				print(fila)
-			pass
+			print("Se ha eliminado la contraseña seleccionada!")
 		elif opcion==5:
 			clearConsole()
 			addOne()
