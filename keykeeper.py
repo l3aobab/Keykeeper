@@ -65,7 +65,7 @@ if ddbb:
 		else:
 			clearConsole()
 			print("Se ha producido un error, por favor, vuelva a intentarlo")
-			addOne()	
+			updateOne()	
 		return sur
 
 	#borrar todos los datos de un determinado sitio
