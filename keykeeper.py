@@ -28,7 +28,10 @@ def showOpcion():
 		print('Error, debes seleccionar un numero del 1 al 6 para seleccionar una opcion')
 	return op
 
-#se comprueba si el usuario quiere obtener otra contraseña o no
+		##################
+		# COMRPOBACIONES #
+		##################
+
 def comprobacionShow():
 	print("""
 Desea obtener otra contraseña?
@@ -50,6 +53,83 @@ Desea obtener otra contraseña?
 		pass
 	return op
 
+def comprobacionUpdate():
+	print("""
+Desea actualizar otra contraseña?
+	1.Si
+	2.No
+		""")
+	op=None
+	try:
+		op=int(input("Selecciona una opcion: "))
+	except ValueError:
+		clearConsole()
+		print('Error, selecciona uno de los valores para poder continuar')
+		comprobacionShow()
+	if op==1:
+		clearConsole()
+		updateOne()
+	else:
+		clearConsole()
+		pass
+	return op
+
+def comprobacionDelete1():
+	print("""
+Por favor, confirme si desea continuar.
+1.Si
+2.No
+		""")
+	op=None
+	try:
+		op=int(input("Selecciona una opcion: "))
+	except ValueError:
+		clearConsole()
+		print('Error, selecciona uno de los valores para poder continuar')
+		comprobacionDelete1()
+	return op
+
+def comprobacionDelete2():	
+	print("""
+Desea eliminar otra contraseña?
+	1.Si
+	2.No
+		""")
+	op2=None
+	try:
+		op2=int(input("Selecciona una opcion: "))
+	except ValueError:
+		clearConsole()
+		print('Error, selecciona uno de los valores para poder continuar')
+		comprobacionShow()
+	if op2==1:
+		clearConsole()
+		deletePass()
+	else:
+		clearConsole()
+		pass
+	return op2
+
+def comprobacionUpdate():
+	print("""
+Desea añadir otra contraseña?
+	1.Si
+	2.No
+		""")
+	op=None
+	try:
+		op=int(input("Selecciona una opcion: "))
+	except ValueError:
+		clearConsole()
+		print('Error, selecciona uno de los valores para poder continuar')
+		comprobacionShow()
+	if op==1:
+		clearConsole()
+		addOne()
+	else:
+		clearConsole()
+		pass
+	return op
 if ddbb:
 	createDB="CREATE DATABASE IF NOT EXISTS "+bbdd
 	dbcursor.execute(createDB)
@@ -96,10 +176,13 @@ if ddbb:
 			dbcursor.execute(showUpdate,(psw, app, usr, ))
 			sur=dbcursor.fetchall()
 			ddbb.commit()
+			clearConsole()
+			print("Se ha actualizado tu contraseña!")
 		else:
 			clearConsole()
 			print("Se ha producido un error, por favor, vuelva a intentarlo")
-			updateOne()	
+			updateOne()
+		comprobacionUpdate()
 		return sur
 
 	#borrar todos los datos de un determinado sitio
@@ -107,9 +190,17 @@ if ddbb:
 		app=input("Indica una aplicación: ")
 		usr=input("Indica el nombre de usuario: ")
 		doDelete="DELETE FROM gestor WHERE sitio=%s and usuario=%s"
-		dbcursor.execute(doDelete,(app, usr, ))
-		doDeleteRes=dbcursor.fetchall()
-		ddbb.commit()
+		op1=comprobacionDelete1()
+		if op1==1:
+			dbcursor.execute(doDelete,(app, usr, ))
+			doDeleteRes=dbcursor.fetchall()
+			ddbb.commit()
+			clearConsole()
+			print("Se ha eliminado la contraseña seleccionada!")
+			comprobacionDelete2()
+		else:
+			clearConsole()
+			pass		
 		return doDeleteRes
 
 	#añadir una nueva contraseña
@@ -124,10 +215,13 @@ if ddbb:
 			dbcursor.execute(insertT,(app, usr, psw, eml, ))
 			addOneRes=dbcursor.fetchall()
 			ddbb.commit()
+			clearConsole()
+			print("Se ha añadido una nueva contraseña!")
 		else:
 			clearConsole()
 			print("Se ha producido un error, por favor, vuelva a intentarlo")
 			addOne()
+		comprobacionUpdate()
 		return addOneRes
 
 	salir=False
@@ -158,22 +252,15 @@ Para continuar, por favor, selecciona una de las siguientes opciones:
 		elif opcion==2:
 			clearConsole()
 			showOne()
-			comprobacionShow()
 		elif opcion==3:
 			clearConsole()
 			updateOne()
-			clearConsole()
-			print("Se ha actualizado tu contraseña!")
 		elif opcion==4:
 			clearConsole()
 			deletePass()
-			clearConsole()
-			print("Se ha eliminado la contraseña seleccionada!")
 		elif opcion==5:
 			clearConsole()
 			addOne()
-			clearConsole()
-			showAll()
 		elif opcion==6:
 			clearConsole()
 			salir=True
