@@ -138,12 +138,43 @@ if ddbb:
 	dbcursor.execute(useDB)
 
 	#se crean las tablas master y gestor si no existen
-	createMP="CREATE TABLE IF NOT EXISTS master (master varchar(255))"
+	createMP="CREATE TABLE IF NOT EXISTS master (masted_id int PRIMARY KEY AUTO_INCREMENT,pass_master varchar(256))"
 	dbcursor.execute(createMP)
 
-	createT="CREATE TABLE IF NOT EXISTS gestor (user_id int PRIMARY KEY AUTO_INCREMENT,sitio varchar(50) NOT NULL,usuario varchar(50),contraseña varchar(255) NOT NULL,email varchar(100))"
+	createT="CREATE TABLE IF NOT EXISTS gestor (user_id int PRIMARY KEY AUTO_INCREMENT,sitio varchar(50) NOT NULL,usuario varchar(50),contraseña varchar(256) NOT NULL,email varchar(100))"
 	dbcursor.execute(createT)
 	
+	######################
+	# CONTRASEÑA MAESTRA #
+	######################
+
+#def checkMaster():
+#	check="SELECT pass_master FROM master"
+#	dbcursor.execute(check)
+#	mas=dbcursor.fetchall()
+#	if (mas==None):
+#		newM=input("Indica la nueva contraseña maestra: ")
+#		insertM="INSERT INTO master (pass_master) values (%s)"
+#		dbcursor.execute(insertM,(newM, ))
+#		ddbb.commit()
+#		clearConsole()
+#		print("Se ha creado la nueva contraseña maestra!")
+#	else:
+#		writeMaster()
+#	return mas
+
+#def writeMaster():
+#	master=input("Indica la contraseña maestra: ")
+#	cm=checkMaster()
+#	if master==cm:
+#		pass
+#	else:
+#		writeMaster()
+#
+#	while not (master==cm):
+#		
+#	return master
+
 	#mostrar todas las contraseñas
 	def showAll():
 		showGestor="SELECT * FROM gestor"
