@@ -148,32 +148,30 @@ if ddbb:
 	# CONTRASEÑA MAESTRA #
 	######################
 
-#def checkMaster():
-#	check="SELECT pass_master FROM master"
-#	dbcursor.execute(check)
-#	mas=dbcursor.fetchall()
-#	if (mas==None):
-#		newM=input("Indica la nueva contraseña maestra: ")
-#		insertM="INSERT INTO master (pass_master) values (%s)"
-#		dbcursor.execute(insertM,(newM, ))
-#		ddbb.commit()
-#		clearConsole()
-#		print("Se ha creado la nueva contraseña maestra!")
-#	else:
-#		writeMaster()
-#	return mas
+	def selectMaster():
+		check="SELECT pass_master FROM master"
+		dbcursor.execute(check)
+		mas=dbcursor.fetchone()
+		if not mas:
+			newM=input("Indica la nueva contraseña maestra: ")
+			newM2=input("Confirmar contraseña: ")
+			if newM==newM2:
+				insertM="INSERT INTO master (pass_master) values (%s)"
+				dbcursor.execute(insertM,(newM, ))
+				ddbb.commit()
+				clearConsole()
+				print("Se ha creado la nueva contraseña maestra!")
+		return mas
 
-#def writeMaster():
-#	master=input("Indica la contraseña maestra: ")
-#	cm=checkMaster()
-#	if master==cm:
-#		pass
-#	else:
-#		writeMaster()
-#
-#	while not (master==cm):
-#		
-#	return master
+	def inputMaster():
+		master=False
+		while not master:
+			clearConsole()
+			master=input("Indica la contraseña maestra: ")
+		return master
+
+	
+
 
 	#mostrar todas las contraseñas
 	def showAll():
@@ -207,6 +205,7 @@ if ddbb:
 			dbcursor.execute(showUpdate,(psw, app, usr, ))
 			sur=dbcursor.fetchall()
 			ddbb.commit()
+
 			clearConsole()
 			print("Se ha actualizado tu contraseña!")
 		else:
@@ -258,8 +257,15 @@ if ddbb:
 	salir=False
 	opcion=0
 
-	while not salir:
-		print("""
+	selM=selectMaster()
+	inpM=inputMaster()
+	print(inpM)
+	for fila in selM:
+			print(fila)
+	if fila==inpM:
+		clearConsole()
+		while not salir:
+			print("""
 ----------------------------------------------------------------------------------------
 
 Bienvendio, """+ name +""", a tu gestor de contraseñas.
@@ -273,25 +279,27 @@ Para continuar, por favor, selecciona una de las siguientes opciones:
 6)Salir
 
 ----------------------------------------------------------------------------------------
-			""")
+				""")
 
-		opcion=showOpcion()
+			opcion=showOpcion()
 
-		if opcion==1:
-			clearConsole()
-			showAll()
-		elif opcion==2:
-			clearConsole()
-			showOne()
-		elif opcion==3:
-			clearConsole()
-			updateOne()
-		elif opcion==4:
-			clearConsole()
-			deletePass()
-		elif opcion==5:
-			clearConsole()
-			addOne()
-		elif opcion==6:
-			clearConsole()
-			salir=True
+			if opcion==1:
+				clearConsole()
+				showAll()
+			elif opcion==2:
+				clearConsole()
+				showOne()
+			elif opcion==3:
+				clearConsole()
+				updateOne()
+			elif opcion==4:
+				clearConsole()
+				deletePass()
+			elif opcion==5:
+				clearConsole()
+				addOne()
+			elif opcion==6:
+				clearConsole()
+				salir=True
+	else:
+		print("La contraseña no es correcta")
