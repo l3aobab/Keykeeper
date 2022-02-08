@@ -1,6 +1,5 @@
 import mysql.connector
 import os
-from prettytable import PrettyTable
 import getpass
 import base64
 
@@ -10,7 +9,7 @@ clearConsole()
 
 print()
 print("Bienvenido a Key Keeper, tu gestor de contraseñas")
-print("Para continuar, introce los siguientes datos:")
+print("Para continuar, introduce los siguientes datos:")
 name=input("Nombre de usuario: ")
 pswd=getpass.getpass("Contraseña: ")
 bbdd=input("Nombre de la base de datos: ")
@@ -26,7 +25,7 @@ def showOpcion():
 		op=int(input("Selecciona una opcion: "))
 	except ValueError:
 		clearConsole()
-		print('Error, debes seleccionar un numero del 1 al 6 para seleccionar una opcion')
+		print("Error, debes seleccionar un numero del 1 al 6 para seleccionar una opcion")
 	return op
 
 		##################
@@ -44,7 +43,7 @@ Desea obtener otra contraseña?
 		op=int(input("Selecciona una opcion: "))
 	except ValueError:
 		clearConsole()
-		print('Error, selecciona uno de los valores para poder continuar')
+		print("Error, selecciona uno de los valores para poder continuar")
 		comprobacionShow()
 	if op==1:
 		clearConsole()
@@ -65,7 +64,7 @@ Desea actualizar otra contraseña?
 		op=int(input("Selecciona una opcion: "))
 	except ValueError:
 		clearConsole()
-		print('Error, selecciona uno de los valores para poder continuar')
+		print("Error, selecciona uno de los valores para poder continuar")
 		comprobacionShow()
 	if op==1:
 		clearConsole()
@@ -86,7 +85,7 @@ Por favor, confirme si desea continuar.
 		op=int(input("Selecciona una opcion: "))
 	except ValueError:
 		clearConsole()
-		print('Error, selecciona uno de los valores para poder continuar')
+		print("Error, selecciona uno de los valores para poder continuar")
 		comprobacionDelete1()
 	return op
 
@@ -101,7 +100,7 @@ Desea eliminar otra contraseña?
 		op2=int(input("Selecciona una opcion: "))
 	except ValueError:
 		clearConsole()
-		print('Error, selecciona uno de los valores para poder continuar')
+		print("Error, selecciona uno de los valores para poder continuar")
 		comprobacionShow()
 	if op2==1:
 		clearConsole()
@@ -122,7 +121,7 @@ Desea añadir otra contraseña?
 		op=int(input("Selecciona una opcion: "))
 	except ValueError:
 		clearConsole()
-		print('Error, selecciona uno de los valores para poder continuar')
+		print("Error, selecciona uno de los valores para poder continuar")
 		comprobacionShow()
 	if op==1:
 		clearConsole()
@@ -134,6 +133,7 @@ Desea añadir otra contraseña?
 	
 if ddbb:
 
+	# en caso de que no exista una base de datos, la creamos
 	createDB="CREATE DATABASE IF NOT EXISTS "+bbdd
 	dbcursor.execute(createDB)
 
@@ -151,13 +151,14 @@ if ddbb:
 	# CONTRASEÑA MAESTRA #
 	######################
 
+	#comprobamos que exista una contraseña maestra, en el caso de que no haya, la creamos
 	def selectMaster():
 		check="SELECT pass_master FROM master"
 		dbcursor.execute(check)
 		mas=dbcursor.fetchone()
 		if not mas:
-			newM=input("Indica la nueva contraseña maestra: ")
-			newM2=input("Confirmar contraseña: ")
+			newM=getpass.getpass("Indica la nueva contraseña maestra: ")
+			newM2=getpass.getpass("Confirmar contraseña: ")
 			if newM==newM2:
 				insertM="INSERT INTO master (pass_master) values (%s)"
 				dbcursor.execute(insertM,(newM, ))
@@ -166,11 +167,12 @@ if ddbb:
 				print("Se ha creado la nueva contraseña maestra!")
 		return mas
 
+	#solicitamos la contraseña maestra
 	def inputMaster():
 		master=False
 		while not master:
 			clearConsole()
-			master=input("Indica la contraseña maestra: ")
+			master=getpass.getpass("Indica la contraseña maestra: ")
 		return master
 
 	#mostrar todas las contraseñas
@@ -245,7 +247,6 @@ if ddbb:
 		psw2=getpass.getpass("Confirma la nueva contraseña: ")
 		eml=input("Indica el correo electronico: ")
 		if psw==psw2:
-			#sha256
 			cryp=base64.b64encode(psw.encode('utf-8'))
 			insertT="INSERT INTO gestor (sitio,usuario,contraseña,email) VALUES (%s,%s,%s,%s)"
 			dbcursor.execute(insertT,(app, usr, cryp, eml, ))
@@ -263,6 +264,7 @@ if ddbb:
 	salir=False
 	opcion=0
 
+	#comprobamos que la contraseña maestra introducida sea la misma de la base de datos
 	selM=selectMaster()
 	inpM=inputMaster()
 	print(inpM)
@@ -270,6 +272,7 @@ if ddbb:
 			print(fila)
 	if fila==inpM:
 		clearConsole()
+		#mostramos el menu
 		while not salir:
 			print("""
 ----------------------------------------------------------------------------------------
