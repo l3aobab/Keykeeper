@@ -2,6 +2,7 @@ import mysql.connector
 import os
 from prettytable import PrettyTable
 import getpass
+import base64
 
 clearConsole = lambda: os.system('cls' if os.name in ('nt', 'dos') else 'clear')
 
@@ -130,7 +131,9 @@ Desea añadir otra contraseña?
 		clearConsole()
 		pass
 	return op
+	
 if ddbb:
+
 	createDB="CREATE DATABASE IF NOT EXISTS "+bbdd
 	dbcursor.execute(createDB)
 
@@ -170,16 +173,15 @@ if ddbb:
 			master=input("Indica la contraseña maestra: ")
 		return master
 
-	
-
-
 	#mostrar todas las contraseñas
 	def showAll():
 		showGestor="SELECT * FROM gestor"
 		dbcursor.execute(showGestor)
 		showGestorResultado=dbcursor.fetchall()
 		for fila in showGestorResultado:
-			print(fila)
+			decodedPassword=base64.b64decode(fila[3] + '=' * (-len(fila[3]) % 4))
+			decodedResult=decodedPassword.decode('utf-8')
+			print(fila[1], fila[2], decodedResult, fila[4])
 		return showGestorResultado
 
 	#mostrar una linea en concreto
@@ -190,7 +192,9 @@ if ddbb:
 		dbcursor.execute(showGestorOne,(app, usr, ))
 		sgor=dbcursor.fetchall()
 		for fila in sgor:
-			print(fila)
+			decodedPassword=base64.b64decode(fila[3] + '=' * (-len(fila[3]) % 4))
+			decodedResult=decodedPassword.decode('utf-8')
+			print(fila[1], fila[2], decodedResult, fila[4])
 		comprobacionShow()
 		return sgor
 
@@ -241,8 +245,10 @@ if ddbb:
 		psw2=getpass.getpass("Confirma la nueva contraseña: ")
 		eml=input("Indica el correo electronico: ")
 		if psw==psw2:
+			#sha256
+			cryp=base64.b64encode(psw.encode('utf-8'))
 			insertT="INSERT INTO gestor (sitio,usuario,contraseña,email) VALUES (%s,%s,%s,%s)"
-			dbcursor.execute(insertT,(app, usr, psw, eml, ))
+			dbcursor.execute(insertT,(app, usr, cryp, eml, ))
 			addOneRes=dbcursor.fetchall()
 			ddbb.commit()
 			clearConsole()
