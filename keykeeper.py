@@ -267,14 +267,14 @@ if ddbb:
 	#comprobamos que la contraseña maestra introducida sea la misma de la base de datos
 	selM=selectMaster()
 	inpM=inputMaster()
-	print(inpM)
+	#print(inpM)
 	for fila in selM:
-			print(fila)
-	if fila==inpM:
-		clearConsole()
-		#mostramos el menu
-		while not salir:
-			print("""
+			#print(fila)
+		if fila==inpM:
+			clearConsole()
+			#mostramos el menu
+			while not salir:
+				print("""
 ----------------------------------------------------------------------------------------
 
 Bienvendio, """+ name +""", a tu gestor de contraseñas.
@@ -288,27 +288,27 @@ Para continuar, por favor, selecciona una de las siguientes opciones:
 6)Salir
 
 ----------------------------------------------------------------------------------------
-				""")
+					""")
 
-			opcion=showOpcion()
+				opcion=showOpcion()
 
-			if opcion==1:
-				clearConsole()
-				showAll()
-			elif opcion==2:
-				clearConsole()
-				showOne()
-			elif opcion==3:
-				clearConsole()
-				updateOne()
-			elif opcion==4:
-				clearConsole()
-				deletePass()
-			elif opcion==5:
-				clearConsole()
-				addOne()
-			elif opcion==6:
-				clearConsole()
-				salir=True
-	else:
-		print("La contraseña no es correcta")
+				if opcion==1:
+					clearConsole()
+					showAll()
+				elif opcion==2:
+					clearConsole()
+					showOne()
+				elif opcion==3:
+					clearConsole()
+					updateOne()
+				elif opcion==4:
+					clearConsole()
+					deletePass()
+				elif opcion==5:
+					clearConsole()
+					addOne()
+				elif opcion==6:
+					clearConsole()
+					salir=True
+		else:
+			print("La contraseña no es correcta")
