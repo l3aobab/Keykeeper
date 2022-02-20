@@ -1,2 +1,2 @@
-# passwdmg
-Password manager
+# Password Manager
+A password manager made in python
