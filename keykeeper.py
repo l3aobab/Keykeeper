@@ -34,10 +34,10 @@ def showOpcion():
 
 def comprobacionShow():
 	print("""
-Desea obtener otra contraseña?
-	1.Si
-	2.No
-		""")
+	Desea obtener otra contraseña?
+		1.Si
+		2.No
+	""")
 	op=None
 	try:
 		op=int(input("Selecciona una opcion: "))
@@ -55,10 +55,10 @@ Desea obtener otra contraseña?
 
 def comprobacionUpdate():
 	print("""
-Desea actualizar otra contraseña?
-	1.Si
-	2.No
-		""")
+	Desea actualizar otra contraseña?
+		1.Si
+		2.No
+	""")
 	op=None
 	try:
 		op=int(input("Selecciona una opcion: "))
@@ -76,10 +76,10 @@ Desea actualizar otra contraseña?
 
 def comprobacionDelete1():
 	print("""
-Por favor, confirme si desea continuar.
-1.Si
-2.No
-		""")
+	Por favor, confirme si desea continuar.
+		1.Si
+		2.No
+	""")
 	op=None
 	try:
 		op=int(input("Selecciona una opcion: "))
@@ -91,10 +91,10 @@ Por favor, confirme si desea continuar.
 
 def comprobacionDelete2():	
 	print("""
-Desea eliminar otra contraseña?
-	1.Si
-	2.No
-		""")
+	Desea eliminar otra contraseña?
+		1.Si
+		2.No
+	""")
 	op2=None
 	try:
 		op2=int(input("Selecciona una opcion: "))
@@ -112,10 +112,10 @@ Desea eliminar otra contraseña?
 
 def comprobacionUpdate():
 	print("""
-Desea añadir otra contraseña?
-	1.Si
-	2.No
-		""")
+	Desea añadir otra contraseña?
+		1.Si
+		2.No
+	""")
 	op=None
 	try:
 		op=int(input("Selecciona una opcion: "))
@@ -277,15 +277,15 @@ if ddbb:
 				print("""
 ----------------------------------------------------------------------------------------
 
-Bienvendio, """+ name +""", a tu gestor de contraseñas.
-Para continuar, por favor, selecciona una de las siguientes opciones:
+	Bienvendio, """+ name +""", a tu gestor de contraseñas.
+	Para continuar, por favor, selecciona una de las siguientes opciones:
 
-1)Mostrar todas las contraseñas
-2)Mostrar una contraseña en concreto
-3)Actualizar una contraseña
-4)Eliminar una contraseña
-5)Añadir una nueva contraseña
-6)Salir
+	1)Mostrar todas las contraseñas
+	2)Mostrar una contraseña en concreto
+	3)Actualizar una contraseña
+	4)Eliminar una contraseña
+	5)Añadir una nueva contraseña
+	6)Salir
 
 ----------------------------------------------------------------------------------------
 					""")
