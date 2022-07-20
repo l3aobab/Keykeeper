@@ -18,7 +18,6 @@ ddbb=mysql.connector.connect(host="localhost",user=name,passwd=pswd)
 dbcursor=ddbb.cursor()
 clearConsole()
 
-#elegir una accion en el menu
 def showOpcion():
 	op=None
 	try:
@@ -27,10 +26,6 @@ def showOpcion():
 		clearConsole()
 		print("Error, debes seleccionar un numero del 1 al 6 para seleccionar una opcion")
 	return op
-
-		##################
-		# COMRPOBACIONES #
-		##################
 
 def comprobacionShow():
 	print("""
@@ -133,25 +128,18 @@ def comprobacionUpdate():
 	
 if ddbb:
 
-	# en caso de que no exista una base de datos, la creamos
 	createDB="CREATE DATABASE IF NOT EXISTS "+bbdd
 	dbcursor.execute(createDB)
 
 	useDB="USE "+bbdd
 	dbcursor.execute(useDB)
 
-	#se crean las tablas master y gestor si no existen
 	createMP="CREATE TABLE IF NOT EXISTS master (masted_id int PRIMARY KEY AUTO_INCREMENT,pass_master varchar(256))"
 	dbcursor.execute(createMP)
 
 	createT="CREATE TABLE IF NOT EXISTS gestor (user_id int PRIMARY KEY AUTO_INCREMENT,sitio varchar(50) NOT NULL,usuario varchar(50),contraseña varchar(256) NOT NULL,email varchar(100))"
 	dbcursor.execute(createT)
-	
-	######################
-	# CONTRASEÑA MAESTRA #
-	######################
 
-	#comprobamos que exista una contraseña maestra, en el caso de que no haya, la creamos
 	def selectMaster():
 		check="SELECT pass_master FROM master"
 		dbcursor.execute(check)
@@ -167,7 +155,6 @@ if ddbb:
 				print("Se ha creado la nueva contraseña maestra!")
 		return mas
 
-	#solicitamos la contraseña maestra
 	def inputMaster():
 		master=False
 		while not master:
@@ -175,7 +162,6 @@ if ddbb:
 			master=getpass.getpass("Indica la contraseña maestra: ")
 		return master
 
-	#mostrar todas las contraseñas
 	def showAll():
 		showGestor="SELECT * FROM gestor"
 		dbcursor.execute(showGestor)
@@ -186,7 +172,6 @@ if ddbb:
 			print(fila[1], fila[2], decodedResult, fila[4])
 		return showGestorResultado
 
-	#mostrar una linea en concreto
 	def showOne():
 		app=input("Indica una aplicación: ")
 		usr=input("Indica el nombre de usuario: ")
@@ -200,7 +185,6 @@ if ddbb:
 		comprobacionShow()
 		return sgor
 
-	#actualizar una contraseña
 	def updateOne():
 		app=input("Indica una aplicación: ")
 		usr=input("Indica el nombre de usuario: ")
@@ -221,7 +205,6 @@ if ddbb:
 		comprobacionUpdate()
 		return sur
 
-	#borrar todos los datos de un determinado sitio
 	def deletePass():
 		app=input("Indica una aplicación: ")
 		usr=input("Indica el nombre de usuario: ")
@@ -239,7 +222,6 @@ if ddbb:
 			pass		
 		return doDeleteRes
 
-	#añadir una nueva contraseña
 	def addOne():
 		app=input("Indica una aplicación: ")
 		usr=input("Indica el nombre de usuario: ")
@@ -264,15 +246,11 @@ if ddbb:
 	salir=False
 	opcion=0
 
-	#comprobamos que la contraseña maestra introducida sea la misma de la base de datos
 	selM=selectMaster()
 	inpM=inputMaster()
-	#print(inpM)
 	for fila in selM:
-			#print(fila)
 		if fila==inpM:
 			clearConsole()
-			#mostramos el menu
 			while not salir:
 				print("""
 ----------------------------------------------------------------------------------------
